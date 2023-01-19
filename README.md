@@ -18,7 +18,7 @@ dependencies {
 
 ## Usage sample
 `AutoSizeText` has all the properties that original `Text` has plus additional property `minFontSize`. 
-If `minFontSize` is not specified, the text size will scale down until fix the borders.
+If `minFontSize` is not specified, the text size will scale down until fit the borders.
 Also remember that `AutoSizeText` will not have effect if text has no borders (`wraps the content`). 
 You can strict it with `maxLines` 
 ```kotlin
