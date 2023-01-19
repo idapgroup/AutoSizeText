@@ -33,3 +33,10 @@ dependencies {
     implementation "androidx.compose.ui:ui:1.3.3"
     implementation 'androidx.compose.material3:material3:1.1.0-alpha04'
 }
+ext {
+    PUBLISH_GROUP_ID = 'com.idapgroup'
+    PUBLISH_VERSION = '0.1.0'
+    PUBLISH_ARTIFACT_ID = 'autosizetext-compose'
+}
+
+apply from: "${rootProject.projectDir}/publish/module.gradle"

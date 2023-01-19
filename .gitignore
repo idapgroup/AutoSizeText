@@ -1,6 +1,7 @@
 .gradle/
 build/
 local.properties
+publish/
 *.log
 captures/
 .externalNativeBuild/
