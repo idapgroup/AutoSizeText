@@ -48,6 +48,6 @@ dependencies {
     implementation 'androidx.compose.material3:material3:1.1.2'
 
     //Most useful dependency
-//    implementation 'com.idapgroup:autosizetext-compose:0.2.1'
-    implementation(project(":auto-size-text"))
+    implementation 'com.idapgroup:autosizetext-compose:0.2.2'
+//    implementation(project(":auto-size-text"))
 }

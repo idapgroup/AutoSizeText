@@ -35,7 +35,7 @@ dependencies {
 }
 ext {
     PUBLISH_GROUP_ID = 'com.idapgroup'
-    PUBLISH_VERSION = '0.2.1'
+    PUBLISH_VERSION = '0.2.2'
     PUBLISH_ARTIFACT_ID = 'autosizetext-compose'
 }
 

@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,12 +46,14 @@ fun Greeting() {
         AutoSizeText(
             text = longText,
             fontSize = 14.sp,
+            lineHeight = 15.sp,
             minFontSize = 12.sp
         )
         AutoSizeText(
             text = longText,
             maxLines = 8,
             fontSize = 20.sp,
+            lineHeight = 20.sp,
             fontWeight = FontWeight.ExtraBold,
             minFontSize = 8.sp
         )
@@ -60,14 +63,28 @@ fun Greeting() {
             fontSize = 40.sp,
         )
         AutoSizeText(
-            modifier = Modifier.height(40.dp),
+            modifier = Modifier.height(100.dp),
             text = longText,
             fontSize = 40.sp,
+            lineHeight = 40.sp,
+            keepLineHeight = true,
         )
         Box(modifier = Modifier.height(40.dp)) {
             AutoSizeText(
                 text = longText,
                 fontSize = 40.sp,
+                lineHeight = 42.sp,
+            )
+        }
+
+        Box(modifier = Modifier.height(50.dp)) {
+            AutoSizeText(
+                text = longText,
+                fontSize = 40.sp,
+                lineHeight = 42.sp,
+                keepLineHeight = true,
+                minFontSize = 38.sp,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

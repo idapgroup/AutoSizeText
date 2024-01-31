@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
 /**
@@ -30,11 +31,20 @@ import androidx.compose.ui.unit.TextUnit
  * Resizeable Text element that contains all the default behavior and description
  * that you can find in [Text].
  * Minimization applied only by height. If you want to reach result,
- * you need to set [maxLines], otherwise [fontSize] will be used.
+ * you need to set [maxLines] or your container should have fixed size, otherwise [fontSize] will
+ * be used.
  *
  * Extra parameters:
- * @param minFontSize - Allows you to specify minimum allowed font size for text.
- *
+ * @param minFontSize - Allows you to specify minimum allowed font size for text. If [minFontSize]
+ * reached but text still overflows, you can use default [overflow] param.
+ * @param keepLineHeight - Allows you to control line height decreasing. If you want to make your
+ * line height unchanged provide `true`. By default `false` means that line height will be
+ * decreased by default aspect ratio from provided values.
+ * Example:
+ *  [fontSize] = 12.sp; [lineHeight] = 24.sp.
+ *  In that case, if [keepLineHeight] = false, [lineHeight] will be always 2 times bigger
+ *  than [fontSize].
+ *  If [keepLineHeight] = true, [lineHeight] will have always 24.sp.
  */
 @Composable
 public fun AutoSizeText(
@@ -54,7 +64,9 @@ public fun AutoSizeText(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    overflow: TextOverflow = TextOverflow.Clip,
+    keepLineHeight: Boolean = false,
 ) {
     val defaultFontSize = coerceTextUnit(
         expected = fontSize,
@@ -64,6 +76,8 @@ public fun AutoSizeText(
         expected = lineHeight,
         default = style.lineHeight
     )
+
+    val ratio = defaultFontSize.value / defaultLineHeight.value
 
     var overriddenMetrics by remember(key1 = text) {
         mutableStateOf(
@@ -95,20 +109,23 @@ public fun AutoSizeText(
         maxLines = maxLines,
         minLines = minLines,
         softWrap = softWrap,
+        overflow = if (textReadyToDraw) overflow else TextOverflow.Clip,
         onTextLayout = { result ->
             if (minFontSize == TextUnit.Unspecified || overriddenMetrics.fontSize > minFontSize) {
                 if (result.didOverflowHeight) {
+                    val correctedFontSize = overriddenMetrics.fontSize.times(SIZE_DECREASER)
+                    val correctedLineHeight =
+                        if (keepLineHeight) lineHeight else correctedFontSize.div(ratio)
                     overriddenMetrics = overriddenMetrics.copy(
-                        fontSize = overriddenMetrics.fontSize.times(SIZE_DECREASER),
-                        lineHeight = overriddenMetrics.lineHeight.times(SIZE_DECREASER)
+                        fontSize = correctedFontSize,
+                        lineHeight = correctedLineHeight
                     )
                 } else {
                     textReadyToDraw = true
                 }
             } else {
                 if (overriddenMetrics.fontSize <= minFontSize) {
-                    val lineHeightMultiplier = minFontSize.value.div(defaultFontSize.value)
-                    val minLineHeight = defaultLineHeight.times(lineHeightMultiplier)
+                    val minLineHeight = if (keepLineHeight) lineHeight else minFontSize.div(ratio)
                     overriddenMetrics = InnerMetrics(
                         fontSize = minFontSize,
                         lineHeight = minLineHeight
