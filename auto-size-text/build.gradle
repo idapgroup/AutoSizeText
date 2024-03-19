@@ -30,12 +30,12 @@ android {
 }
 
 dependencies {
-    implementation "androidx.compose.ui:ui:1.6.0"
-    implementation 'androidx.compose.material3:material3:1.1.2'
+    implementation "androidx.compose.ui:ui:1.6.3"
+    implementation 'androidx.compose.material3:material3:1.2.1'
 }
 ext {
     PUBLISH_GROUP_ID = 'com.idapgroup'
-    PUBLISH_VERSION = '0.2.2'
+    PUBLISH_VERSION = '0.3.0'
     PUBLISH_ARTIFACT_ID = 'autosizetext-compose'
 }
 

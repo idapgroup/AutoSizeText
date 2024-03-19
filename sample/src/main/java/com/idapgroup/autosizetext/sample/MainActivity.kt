@@ -3,7 +3,11 @@ package com.idapgroup.autosizetext.sample
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -65,15 +69,15 @@ fun Greeting() {
         AutoSizeText(
             modifier = Modifier.height(100.dp),
             text = longText,
-            fontSize = 40.sp,
+            fontSize = 1000.sp,
             lineHeight = 40.sp,
             keepLineHeight = true,
         )
         Box(modifier = Modifier.height(40.dp)) {
             AutoSizeText(
                 text = longText,
-                fontSize = 40.sp,
-                lineHeight = 42.sp,
+                fontSize = 1000.sp,
+                lineHeight = 1020.sp,
             )
         }
 

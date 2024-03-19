@@ -22,9 +22,8 @@ import androidx.compose.ui.unit.TextUnit
 
 /**
  * future releases:
- * 1. Support overflow
- * 2. Support maxFontSize
- * 3. Add types: Maximisation, Minimization, Balanced
+ * 1. Support maxFontSize
+ * 2. Add types: Maximisation, Minimization, Balanced
  */
 
 /**
@@ -90,10 +89,15 @@ public fun AutoSizeText(
     var textReadyToDraw by remember(key1 = text) {
         mutableStateOf(false)
     }
+    var decreasingStage: SizeDecreasingStage? by remember(key1 = text) {
+        mutableStateOf(null)
+    }
 
     Text(
         modifier = modifier.drawWithContent {
-            if (textReadyToDraw) drawContent()
+            if (textReadyToDraw) {
+                drawContent()
+            }
         },
         text = text,
         color = color,
@@ -111,17 +115,28 @@ public fun AutoSizeText(
         softWrap = softWrap,
         overflow = if (textReadyToDraw) overflow else TextOverflow.Clip,
         onTextLayout = { result ->
+            if (textReadyToDraw) {
+                onTextLayout(result)
+                return@Text
+            }
             if (minFontSize == TextUnit.Unspecified || overriddenMetrics.fontSize > minFontSize) {
-                if (result.didOverflowHeight) {
-                    val correctedFontSize = overriddenMetrics.fontSize.times(SIZE_DECREASER)
+                if (result.didOverflowHeight.not() && decreasingStage == null) {
+                    textReadyToDraw = true
+                    onTextLayout(result)
+                    return@Text
+                }
+
+                decreasingStage = decreasingStage.next(result.didOverflowHeight)
+                if (decreasingStage == SizeDecreasingStage.Peace) {
+                    textReadyToDraw = true
+                } else {
+                    val correctedFontSize = overriddenMetrics.fontSize.times(decreasingStage!!.value)
                     val correctedLineHeight =
                         if (keepLineHeight) lineHeight else correctedFontSize.div(ratio)
                     overriddenMetrics = overriddenMetrics.copy(
                         fontSize = correctedFontSize,
                         lineHeight = correctedLineHeight
                     )
-                } else {
-                    textReadyToDraw = true
                 }
             } else {
                 if (overriddenMetrics.fontSize <= minFontSize) {
@@ -137,4 +152,3 @@ public fun AutoSizeText(
         },
     )
 }
-
