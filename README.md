@@ -1,5 +1,4 @@
 # AutoSizeText
-![Maven Central](https://img.shields.io/maven-central/v/com.idapgroup/autosizetext-compose)
 
 AutoSizeText component for `Material3 Android Compose`.
 
@@ -11,9 +10,11 @@ repositories {
 }
 ```
 Add to your module next dependency:
+
+![Maven Central](https://img.shields.io/maven-central/v/com.idapgroup/autosizetext-compose)
 ```groovy
 dependencies {
-  implementation 'com.idapgroup:autosizetext-compose:0.2.2'
+  implementation 'com.idapgroup:autosizetext-compose:<latest-version>'
 }
 ```
 `Note:` Do not forget to add compose dependencies 🙃
