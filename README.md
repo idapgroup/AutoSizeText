@@ -13,35 +13,44 @@ repositories {
 Add to your module next dependency:
 ```groovy
 dependencies {
-  implementation 'com.idapgroup:autosizetext-compose:0.2.1'
+  implementation 'com.idapgroup:autosizetext-compose:0.2.2'
 }
 ```
 `Note:` Do not forget to add compose dependencies 🙃
 
 ## Usage sample
-`AutoSizeText` has all the properties that original `Text` has plus additional property `minFontSize`. 
-If `minFontSize` is not specified, the text size will scale down until fit the borders.
-Also remember that `AutoSizeText` will not have effect if text has no borders (`wraps the content`). 
-You can strict it with `maxLines` 
+`AutoSizeText` has all the properties that original `Text` has plus additional properties:
++ `minFontSize` - specifies min value for font size. If min value reached but text still overflows, `overflow` parameter will be used. If `minFontSize` is not specified, the text size will scale down until fit the borders and `overflow` param will be ignored.
++ `keepLineHeight` - specifies line height changes. Default value `false` means that line height will be changed in aspect ratio to the default `fontSize` and `lineHeight`. `true` means that provided `lineHeight` will be unchanged.
+
+Also remember that `AutoSizeText` will not have effect if text has no borders (`wraps the content`).
+
+For reach the autosizing effect, uou can strict the `maxLines` param
 ```kotlin
 AutoSizeText(
   text = longText,
   maxLines = 2,
   fontSize = 14.sp,
+  lineHeight = 16.sp,
   minFontSize = 12.sp
 )
 ```
 or set the `height` for the modifier.
 ```kotlin
 AutoSizeText(
-    modifier = Modifier.height(40.dp),
+    modifier = Modifier.height(60.dp),
     text = longText,
     fontSize = 40.sp,
+    lineHeight = 42.sp,
+    keepLineHeight = true,
+    overflow = TextOverflow.Ellipsis,
 )
 Box(modifier = Modifier.height(40.dp)) {
     AutoSizeText(
         text = longText,
         fontSize = 40.sp,
+        lineHeight = 42.sp,
+        keepLineHeight = false,
     )
 }
 ```
